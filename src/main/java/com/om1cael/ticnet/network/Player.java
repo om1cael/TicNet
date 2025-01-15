@@ -20,4 +20,8 @@ public class Player implements Runnable {
     public void run() {
         log.info("New connection from {}", this.socket.getInetAddress());
     }
+
+    public int getId() {
+        return id;
+    }
 }
