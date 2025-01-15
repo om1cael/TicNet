@@ -13,6 +13,11 @@ public class RoomManager {
     private final Logger log = LogManager.getLogger(RoomManager.class);
 
     public void createRoom(Player host) {
+        if(gameRooms.containsKey(host)) {
+            log.info("Player {} tried to create a new room, but is already playing.", host.getSocket().getInetAddress());
+            return;
+        }
+
         gameRooms.put(host, Optional.empty());
 
         log.info("Creating new game room with player {} ({}) as host",
@@ -25,7 +30,7 @@ public class RoomManager {
         Optional<Player> currentGuest = gameRooms.get(host);
 
         if(currentGuest.isPresent()) {
-            log.warn("Player {} tried to enter a full game room.", host.getSocket().getInetAddress());
+            log.info("Player {} tried to enter a full game room.", host.getSocket().getInetAddress());
             return;
         }
 
