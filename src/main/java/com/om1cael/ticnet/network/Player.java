@@ -1,6 +1,7 @@
 package com.om1cael.ticnet.network;
 
 import com.om1cael.ticnet.Main;
+import com.om1cael.ticnet.commands.CreateCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +52,8 @@ public class Player implements Runnable {
     }
 
     private void parseClient(String clientData) {
-        // parse commands
+        if(clientData.contains("create-room"))
+            new CreateCommand().run(this);
     }
 
     private void disconnect() {

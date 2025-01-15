@@ -2,6 +2,7 @@ package com.om1cael.ticnet;
 
 import com.om1cael.ticnet.network.Player;
 import com.om1cael.ticnet.network.PlayersManager;
+import com.om1cael.ticnet.session.RoomManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +17,9 @@ public class Main {
     private int idCounter;
 
     private final Logger log = LogManager.getLogger(Main.class);
+
     private static final PlayersManager playersManager = new PlayersManager();
+    private static final RoomManager roomManager = new RoomManager();
 
     public static void main(String[] args) {
         new Main().start();
@@ -47,5 +50,9 @@ public class Main {
 
     public static PlayersManager getPlayersManager() {
         return playersManager;
+    }
+
+    public static RoomManager getRoomManager() {
+        return roomManager;
     }
 }
