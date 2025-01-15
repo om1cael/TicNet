@@ -16,7 +16,7 @@ public class Main {
     private int idCounter;
 
     private final Logger log = LogManager.getLogger(Main.class);
-    private final PlayersManager playersManager;
+    private static final PlayersManager playersManager = new PlayersManager();
 
     public static void main(String[] args) {
         new Main().start();
@@ -26,8 +26,6 @@ public class Main {
         this.SERVER_PORT = 1024;
         this.CONNECTION_THREADS = 4;
         this.idCounter = 0;
-
-        this.playersManager = new PlayersManager();
     }
 
     private void start() {
@@ -47,7 +45,7 @@ public class Main {
         }
     }
 
-    public PlayersManager getPlayersManager() {
+    public static PlayersManager getPlayersManager() {
         return playersManager;
     }
 }
