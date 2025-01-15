@@ -1,6 +1,6 @@
 package com.om1cael.ticnet;
 
-import com.om1cael.ticnet.server.Player;
+import com.om1cael.ticnet.network.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,14 +14,10 @@ public class Main {
     private final byte CONNECTION_THREADS = 4;
 
     private final Logger log = LogManager.getLogger(Main.class);
-    private int idCounter;
+    private int idCounter = 0;
 
     public static void main(String[] args) {
         new Main().start();
-    }
-
-    public Main() {
-        this.idCounter = 0;
     }
 
     private void start() {

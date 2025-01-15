@@ -1,4 +1,4 @@
-package com.om1cael.ticnet.server;
+package com.om1cael.ticnet.network;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
