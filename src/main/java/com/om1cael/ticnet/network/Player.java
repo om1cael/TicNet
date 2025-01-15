@@ -44,7 +44,8 @@ public class Player implements Runnable {
         } catch (IOException e) {
             log.info("Could not read data from player id {} at {}",
                     this.id,
-                    this.socket.getInetAddress()
+                    this.socket.getInetAddress(),
+                    e
             );
         }
     }
