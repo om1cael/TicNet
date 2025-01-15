@@ -36,7 +36,7 @@ public class Main {
 
             while(true) {
                 Player player = new Player(serverSocket.accept(), this.idCounter++);
-                this.playersManager.createPlayer(player);
+                playersManager.createPlayer(player);
 
                 executorService.execute(player);
             }

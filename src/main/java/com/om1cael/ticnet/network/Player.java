@@ -66,6 +66,10 @@ public class Player implements Runnable {
         }
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     public int getId() {
         return id;
     }
