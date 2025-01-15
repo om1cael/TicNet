@@ -34,9 +34,13 @@ public class Player implements Runnable {
 
     private void readClient() {
         try(BufferedReader clientData = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
-            if(clientData.read() == -1 || this.socket.isClosed()) {
+            String input = clientData.readLine();
+            if(input == null || this.socket.isClosed()) {
                 this.disconnect();
+                return;
             }
+
+            this.parseClient(clientData.readLine());
         } catch (IOException e) {
             log.info("Could not read data from player id {} at {}",
                     this.id,
@@ -45,11 +49,20 @@ public class Player implements Runnable {
         }
     }
 
+    private void parseClient(String clientData) {
+        // parse commands
+    }
+
     private void disconnect() {
         Main.getPlayersManager().deletePlayer(this.id);
         this.isRunning = false;
 
-        log.info("Player id {} disconnected", this.id);
+        try {
+            this.socket.close();
+            log.info("Player id {} disconnected", this.id);
+        } catch (IOException e) {
+            log.error("An error occurred while closing socket of player id {}", this.id);
+        }
     }
 
     public int getId() {
