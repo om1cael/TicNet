@@ -18,7 +18,7 @@ public class JoinCommand {
 
     public void run() {
         String[] splitCommand = this.clientCommand.split(" ");
-        if(splitCommand[1] == null) {
+        if(splitCommand.length <= 1) {
             log.info("Could not join room, because host ID was not specified {}", this.guest.getSocket().getInetAddress());
             return;
         }
