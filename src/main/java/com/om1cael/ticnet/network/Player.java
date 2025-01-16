@@ -66,7 +66,7 @@ public class Player implements Runnable {
 
     private void parseClient(String clientData) {
         if(clientData.contains("create-room"))
-            new CreateCommand().run(Main.getPlayersManager().readPlayer(this.id));
+            new CreateCommand(Main.getPlayersManager().readPlayer(this.id)).run();
         else if(clientData.contains("join-room"))
             new JoinCommand(Main.getPlayersManager().readPlayer(this.id), clientData).run();
     }
