@@ -62,7 +62,13 @@ public class RoomManager {
     }
 
     public void deleteRoom(Player host) {
+        Optional<Player> guest = gamePlayers.get(host);
+
+        host.setCurrentGame(null);
+        guest.ifPresent(player -> player.setCurrentGame(null));
+
         gamePlayers.remove(host);
+        gameRooms.remove(host);
 
         log.info("Deleting game room that has player {} as host",
                 host.getSocket().getInetAddress()
