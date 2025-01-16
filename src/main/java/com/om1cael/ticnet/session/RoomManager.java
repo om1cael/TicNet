@@ -62,6 +62,11 @@ public class RoomManager {
     }
 
     public void deleteRoom(Player host) {
+        if(!gamePlayers.containsKey(host)) {
+            log.info("Tried to delete a room, but host was not found");
+            return;
+        }
+
         Optional<Player> guest = gamePlayers.get(host);
 
         host.setCurrentGame(null);
