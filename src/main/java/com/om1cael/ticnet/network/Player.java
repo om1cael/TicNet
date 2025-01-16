@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class Player implements Runnable {
     private final Socket socket;
@@ -48,11 +47,13 @@ public class Player implements Runnable {
 
     private void readClient(BufferedReader clientData) throws IOException {
         String input = clientData.readLine();
+
         if(input == null || this.socket.isClosed()) {
             log.warn("Input is null or socket is closed, starting to disconnect {}! Input: {}",
                     this.socket.getInetAddress(),
                     input
             );
+
             this.disconnect();
             return;
         }
