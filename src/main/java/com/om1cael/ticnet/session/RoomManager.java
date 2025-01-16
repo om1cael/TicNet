@@ -5,25 +5,26 @@ import com.om1cael.ticnet.network.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RoomManager {
     private final ConcurrentHashMap<Player, Optional<Player>> gamePlayers = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Map<Player, Optional<Player>>, Game> gameRooms = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Player, Game> gameRooms = new ConcurrentHashMap<>();
 
     private final Logger log = LogManager.getLogger(RoomManager.class);
 
     public void createRoom(Player host) {
-        if(gamePlayers.containsKey(host)) {
+        if(gamePlayers.containsKey(host) || host.getCurrentGame() != null) {
             log.info("Player {} tried to create a new room, but is already playing.", host.getSocket().getInetAddress());
             return;
         }
 
         Game game = new Game(host, Optional.empty());
         gamePlayers.put(host, Optional.empty());
-        gameRooms.put(gamePlayers, game);
+        gameRooms.put(host, game);
+
+        host.setCurrentGame(game);
 
         log.info("Creating new game room with player {} ({}) as host",
                 host.getId(),
@@ -32,18 +33,27 @@ public class RoomManager {
     }
 
     public void joinRoom(Player guest, Player host) {
-        Optional<Player> currentGuest = gamePlayers.get(host);
+        if(guest.getCurrentGame() != null) {
+            log.info("Could not join room, because is already in a game {}", guest.getSocket().getInetAddress());
+            return;
+        }
 
-        if(currentGuest.isPresent()) {
+        Optional<Player> currentGuest = gamePlayers.get(host);
+        if(currentGuest != null && currentGuest.isPresent()) {
             log.info("Player {} tried to enter a full game room.", host.getSocket().getInetAddress());
             return;
         }
 
         Game game = gameRooms.get(host);
-        game.setGuest(Optional.of(guest));
+        if(game == null) {
+            log.info("Could not join room, as it was not found {}", guest.getSocket().getInetAddress());
+            return;
+        }
 
+        game.setGuest(Optional.of(guest));
         gamePlayers.put(host, Optional.of(guest));
-        gameRooms.put(gamePlayers, game);
+
+        guest.setCurrentGame(game);
 
         log.info("Player {} entering {} game room.",
                 guest.getSocket().getInetAddress(),

@@ -2,6 +2,7 @@ package com.om1cael.ticnet.network;
 
 import com.om1cael.ticnet.Main;
 import com.om1cael.ticnet.commands.CreateCommand;
+import com.om1cael.ticnet.commands.JoinCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,6 +15,8 @@ public class Player implements Runnable {
     private final Socket socket;
     private final int id;
     private volatile boolean isRunning;
+
+    private Game currentGame = null;
 
     private final Logger log = LogManager.getLogger(Player.class);
 
@@ -63,7 +66,9 @@ public class Player implements Runnable {
 
     private void parseClient(String clientData) {
         if(clientData.contains("create-room"))
-            new CreateCommand().run(this);
+            new CreateCommand().run(Main.getPlayersManager().readPlayer(this.id));
+        else if(clientData.contains("join-room"))
+            new JoinCommand(Main.getPlayersManager().readPlayer(this.id), clientData).run();
     }
 
     private void disconnect() {
@@ -76,6 +81,14 @@ public class Player implements Runnable {
         } catch (IOException e) {
             log.error("An error occurred while closing socket of player id {}", this.id);
         }
+    }
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+    }
+
+    public Game getCurrentGame() {
+        return currentGame;
     }
 
     public Socket getSocket() {
