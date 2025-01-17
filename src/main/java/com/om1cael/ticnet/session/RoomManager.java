@@ -61,30 +61,37 @@ public class RoomManager {
     }
 
     public void deleteRoom(Player player, boolean abruptStop) {
+        Player actualHost = player;
+
         if(!this.gameRooms.containsKey(player) && player.getCurrentGame() != null) {
             log.info("Player that requested room deletion ({}) was a guest, getting host!", player.getSocket().getInetAddress());
             for(Player host : this.gamePlayers.keySet()) {
                 if(this.gamePlayers.get(host).equals(Optional.of(player))) {
-                    player = host;
+                    actualHost = host;
                     break;
                 }
             }
         }
 
-        Optional<Player> guest = this.gamePlayers.get(player);
-        Game game = this.gameRooms.get(player);
+        Optional<Player> guest = this.gamePlayers.get(actualHost);
+        Game game = this.gameRooms.get(actualHost);
         if(game != null) {
+            if(abruptStop) {
+                if(actualHost == player) game.setHost(null);
+                else game.setGuest(Optional.empty());
+            }
+
             game.stopGame(abruptStop);
         }
 
         player.setCurrentGame(null);
         guest.ifPresent(client -> client.setCurrentGame(null));
 
-        this.gamePlayers.remove(player);
-        this.gameRooms.remove(player);
+        this.gamePlayers.remove(actualHost);
+        this.gameRooms.remove(actualHost);
 
         log.info("Deleting game room that has player {} as host",
-                player.getSocket().getInetAddress()
+                actualHost.getSocket().getInetAddress()
         );
     }
 }

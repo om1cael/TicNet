@@ -47,6 +47,10 @@ public class Game {
         this.isRunning.set(false);
     }
 
+    public void setHost(Player host) {
+        this.host = host;
+    }
+
     public void setGuest(Optional<Player> guest) {
         this.guest = guest;
         this.setup();
