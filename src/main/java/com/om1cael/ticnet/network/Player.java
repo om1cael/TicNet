@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -45,6 +46,14 @@ public class Player implements Runnable {
             if(e.getMessage().equalsIgnoreCase("Socket is closed")) {
                 this.disconnect();
             }
+        }
+    }
+
+    public void writeClient(String message) {
+        try(DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream())) {
+            dataOutputStream.writeUTF(message + "\n");
+        } catch (IOException e) {
+            log.error("An error occurred while writing data to client {}", this.socket.getInetAddress());
         }
     }
 
