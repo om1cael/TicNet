@@ -27,11 +27,10 @@ public class Game {
             log.info("A new game with the host {} was started!", this.host.getSocket().getInetAddress());
             this.isRunning.set(true);
             this.play();
-            return;
+        } else {
+            log.error("It was not possible to start a game!");
+            Main.getRoomManager().deleteRoom(this.host, false);
         }
-
-        log.error("It was not possible to start a game!");
-        Main.getRoomManager().deleteRoom(this.host, false);
     }
 
     private void play() {
