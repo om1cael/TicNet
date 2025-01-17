@@ -44,7 +44,7 @@ public class RoomManager {
             return;
         }
 
-        Game game = gameRooms.get(host);
+        Game game = this.gameRooms.get(host);
         if(game == null) {
             log.info("Could not join room, as it was not found {}", guest.getSocket().getInetAddress());
             return;
@@ -71,13 +71,13 @@ public class RoomManager {
             }
         }
 
-        Optional<Player> guest = gamePlayers.get(player);
+        Optional<Player> guest = this.gamePlayers.get(player);
 
         player.setCurrentGame(null);
         guest.ifPresent(client -> client.setCurrentGame(null));
 
-        gamePlayers.remove(player);
-        gameRooms.remove(player);
+        this.gamePlayers.remove(player);
+        this.gameRooms.remove(player);
 
         log.info("Deleting game room that has player {} as host",
                 player.getSocket().getInetAddress()
