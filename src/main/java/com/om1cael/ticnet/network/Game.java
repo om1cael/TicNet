@@ -1,5 +1,10 @@
 package com.om1cael.ticnet.network;
 
+import com.om1cael.ticnet.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -7,7 +12,9 @@ public class Game {
     private Player host;
     private Optional<Player> guest;
 
-    private AtomicBoolean isRunning;
+    private final AtomicBoolean isRunning;
+
+    private final Logger log = LogManager.getLogger(Game.class);
 
     public Game(Player host, Optional<Player> guest) {
         this.host = host;
@@ -15,19 +22,34 @@ public class Game {
         this.isRunning = new AtomicBoolean(false);
     }
 
-    public void stopGame(boolean abruptStop) {
-        this.isRunning.set(false);
-
-        if(abruptStop) {
-            // Send message regarding abrupt stop
+    private void setup() {
+        if(host != null && guest.isPresent()) {
+            log.info("A new game with the host {} was started!", this.host.getSocket().getInetAddress());
+            this.isRunning.set(true);
+            this.play();
             return;
         }
 
-        // Send message regarding stop
-        // Anything else that needs to be done
+        log.error("It was not possible to start a game!");
+        Main.getRoomManager().deleteRoom(this.host, false);
+    }
+
+    private void play() {
+
+    }
+
+    public void stopGame(boolean abruptStop) {
+        if(this.isRunning.get()) return;
+
+        if(abruptStop) {
+            log.warn("Abrupt stop on game of {}!",
+                    this.host.getSocket().getInetAddress()
+            );
+        }
     }
 
     public void setGuest(Optional<Player> guest) {
         this.guest = guest;
+        this.setup();
     }
 }
