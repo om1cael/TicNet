@@ -6,10 +6,7 @@ import com.om1cael.ticnet.commands.JoinCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 public class Player implements Runnable {
@@ -20,12 +17,18 @@ public class Player implements Runnable {
     private Game currentGame = null;
 
     private final Logger log = LogManager.getLogger(Player.class);
+    private PrintWriter printWriter;
 
     public Player(Socket socket, int id) {
         this.socket = socket;
         this.id = id;
 
         this.isRunning = true;
+        try {
+            this.printWriter = new PrintWriter(this.socket.getOutputStream(), true);
+        } catch (IOException e) {
+            log.fatal("An error occurred while setting player data output stream up");
+        }
     }
 
     @Override
@@ -50,11 +53,7 @@ public class Player implements Runnable {
     }
 
     public void writeClient(String message) {
-        try(DataOutputStream dataOutputStream = new DataOutputStream(this.socket.getOutputStream())) {
-            dataOutputStream.writeUTF(message + "\n");
-        } catch (IOException e) {
-            log.error("An error occurred while writing data to client {}", this.socket.getInetAddress());
-        }
+        this.printWriter.println(message);
     }
 
     private void readClient(BufferedReader clientData) throws IOException {
