@@ -69,6 +69,9 @@ public class Player implements Runnable {
             new CreateCommand(Main.getPlayersManager().readPlayer(this.id)).run();
         else if(clientData.contains("join-room"))
             new JoinCommand(Main.getPlayersManager().readPlayer(this.id), clientData).run();
+        else if(clientData.contains("exit")) {
+            this.disconnect();
+        }
     }
 
     private void disconnect() {
