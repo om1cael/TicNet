@@ -46,6 +46,8 @@ public class Game {
                     this.host.getSocket().getInetAddress()
             );
         }
+
+        this.isRunning.set(false);
     }
 
     public void setGuest(Optional<Player> guest) {
