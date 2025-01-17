@@ -30,6 +30,11 @@ public class JoinCommand {
         }
 
         Player host = Main.getPlayersManager().readPlayer(hostID);
+        if(host == null) {
+            log.info("Could not join room, because host was not found.");
+            return;
+        }
+
         Main.getRoomManager().joinRoom(this.guest, host);
     }
 }
