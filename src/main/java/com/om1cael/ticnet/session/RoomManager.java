@@ -23,7 +23,6 @@ public class RoomManager {
         Game game = new Game(host, Optional.empty());
         this.gamePlayers.put(host, Optional.empty());
         this.gameRooms.put(host, game);
-
         host.setCurrentGame(game);
 
         log.info("Creating new game room with player {} ({}) as host",
@@ -84,7 +83,7 @@ public class RoomManager {
             game.stopGame(abruptStop);
         }
 
-        player.setCurrentGame(null);
+        actualHost.setCurrentGame(null);
         guest.ifPresent(client -> client.setCurrentGame(null));
 
         this.gamePlayers.remove(actualHost);
