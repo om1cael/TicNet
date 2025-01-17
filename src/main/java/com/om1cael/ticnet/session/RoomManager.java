@@ -15,14 +15,14 @@ public class RoomManager {
     private final Logger log = LogManager.getLogger(RoomManager.class);
 
     public void createRoom(Player host) {
-        if(gamePlayers.containsKey(host) || host.getCurrentGame() != null) {
+        if(this.gamePlayers.containsKey(host) || host.getCurrentGame() != null) {
             log.info("Player {} tried to create a new room, but is already playing.", host.getSocket().getInetAddress());
             return;
         }
 
         Game game = new Game(host, Optional.empty());
-        gamePlayers.put(host, Optional.empty());
-        gameRooms.put(host, game);
+        this.gamePlayers.put(host, Optional.empty());
+        this.gameRooms.put(host, game);
 
         host.setCurrentGame(game);
 
@@ -38,7 +38,7 @@ public class RoomManager {
             return;
         }
 
-        Optional<Player> currentGuest = gamePlayers.get(host);
+        Optional<Player> currentGuest = this.gamePlayers.get(host);
         if(currentGuest != null && currentGuest.isPresent()) {
             log.info("Player {} tried to enter a full game room.", host.getSocket().getInetAddress());
             return;
@@ -51,8 +51,7 @@ public class RoomManager {
         }
 
         game.setGuest(Optional.of(guest));
-        gamePlayers.put(host, Optional.of(guest));
-
+        this.gamePlayers.put(host, Optional.of(guest));
         guest.setCurrentGame(game);
 
         log.info("Player {} entering {} game room.",
@@ -61,22 +60,27 @@ public class RoomManager {
         );
     }
 
-    public void deleteRoom(Player host) {
-        if(host.getCurrentGame() == null || !gamePlayers.containsKey(host)) {
-            log.info("Tried to delete a room, but host game was not found");
-            return;
+    public void deleteRoom(Player player) {
+        if(!this.gameRooms.containsKey(player) && player.getCurrentGame() != null) {
+            log.info("Player that requested room deletion ({}) was a guest, getting host!", player.getSocket().getInetAddress());
+            for(Player host : this.gamePlayers.keySet()) {
+                if(this.gamePlayers.get(host).equals(Optional.of(player))) {
+                    player = host;
+                    break;
+                }
+            }
         }
 
-        Optional<Player> guest = gamePlayers.get(host);
+        Optional<Player> guest = gamePlayers.get(player);
 
-        host.setCurrentGame(null);
-        guest.ifPresent(player -> player.setCurrentGame(null));
+        player.setCurrentGame(null);
+        guest.ifPresent(client -> client.setCurrentGame(null));
 
-        gamePlayers.remove(host);
-        gameRooms.remove(host);
+        gamePlayers.remove(player);
+        gameRooms.remove(player);
 
         log.info("Deleting game room that has player {} as host",
-                host.getSocket().getInetAddress()
+                player.getSocket().getInetAddress()
         );
     }
 }
