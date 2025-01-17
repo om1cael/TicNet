@@ -8,7 +8,7 @@ import java.net.InetAddress;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Game {
+public class Game implements Runnable {
     private Player host;
     private Optional<Player> guest;
 
@@ -28,7 +28,7 @@ public class Game {
         if(host != null && guest.isPresent()) {
             log.info("A new game with the host {} was started!", this.host.getSocket().getInetAddress());
             this.isRunning.set(true);
-            this.play();
+            Main.createGameThread(this::play);
         } else {
             log.error("It was not possible to start a game!");
             Main.getRoomManager().deleteRoom(this.host, false);
@@ -36,6 +36,7 @@ public class Game {
     }
 
     private void play() {
+        while(this.isRunning.get()) {}
     }
 
     public void stopGame(boolean abruptStop) {
@@ -66,5 +67,10 @@ public class Game {
         if(guest.isPresent()) {
             this.setup();
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }
