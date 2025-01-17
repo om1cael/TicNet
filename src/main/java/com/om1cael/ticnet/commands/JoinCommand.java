@@ -1,7 +1,7 @@
 package com.om1cael.ticnet.commands;
 
 import com.om1cael.ticnet.Main;
-import com.om1cael.ticnet.Responses;
+import com.om1cael.ticnet.response.Responses;
 import com.om1cael.ticnet.network.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

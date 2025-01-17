@@ -1,6 +1,6 @@
 package com.om1cael.ticnet.session;
 
-import com.om1cael.ticnet.Responses;
+import com.om1cael.ticnet.response.Responses;
 import com.om1cael.ticnet.network.Game;
 import com.om1cael.ticnet.network.Player;
 import org.apache.logging.log4j.LogManager;

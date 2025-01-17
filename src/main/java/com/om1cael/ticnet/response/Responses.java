@@ -1,7 +1,7 @@
-package com.om1cael.ticnet;
+package com.om1cael.ticnet.response;
 
 import com.google.gson.Gson;
-import com.om1cael.ticnet.model.Response;
+import com.om1cael.ticnet.response.model.Response;
 
 public class Responses {
     private static final Gson gson = new Gson();
