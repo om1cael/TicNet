@@ -76,7 +76,7 @@ public class Player implements Runnable {
 
     private void disconnect() {
         if(this.currentGame != null)
-            Main.getRoomManager().deleteRoom(Main.getPlayersManager().readPlayer(this.id));
+            Main.getRoomManager().deleteRoom(Main.getPlayersManager().readPlayer(this.id), true);
 
         Main.getPlayersManager().deletePlayer(this.id);
         this.isRunning = false;
