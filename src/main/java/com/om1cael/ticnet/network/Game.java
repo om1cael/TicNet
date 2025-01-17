@@ -35,7 +35,9 @@ public class Game {
     }
 
     private void play() {
+        while(this.isRunning.get()) {
 
+        }
     }
 
     public void stopGame(boolean abruptStop) {
