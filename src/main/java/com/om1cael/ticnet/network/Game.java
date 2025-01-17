@@ -4,7 +4,6 @@ import com.om1cael.ticnet.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,13 +33,10 @@ public class Game {
     }
 
     private void play() {
-        while(this.isRunning.get()) {
-
-        }
     }
 
     public void stopGame(boolean abruptStop) {
-        if(this.isRunning.get()) return;
+        if(!this.isRunning.get()) return;
 
         if(abruptStop) {
             log.warn("Abrupt stop on game of {}!",
