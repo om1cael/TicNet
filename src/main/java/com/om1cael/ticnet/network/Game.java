@@ -4,6 +4,7 @@ import com.om1cael.ticnet.Main;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.InetAddress;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -12,6 +13,7 @@ public class Game {
     private Optional<Player> guest;
 
     private final AtomicBoolean isRunning;
+    private final InetAddress hostAddress;
 
     private final Logger log = LogManager.getLogger(Game.class);
 
@@ -19,6 +21,7 @@ public class Game {
         this.host = host;
         this.guest = guest;
         this.isRunning = new AtomicBoolean(false);
+        this.hostAddress = this.host.getSocket().getInetAddress();
     }
 
     private void setup() {
@@ -40,8 +43,14 @@ public class Game {
 
         if(abruptStop) {
             log.warn("Abrupt stop on game of {}!",
-                    this.host.getSocket().getInetAddress()
+                    this.hostAddress
             );
+
+            if(this.host == null) {
+                log.info("Disconnection origin is host");
+            } else if(this.guest.isEmpty()) {
+                log.info("Disconnection origin is guest");
+            }
         }
 
         this.isRunning.set(false);
@@ -53,6 +62,9 @@ public class Game {
 
     public void setGuest(Optional<Player> guest) {
         this.guest = guest;
-        this.setup();
+
+        if(guest.isPresent()) {
+            this.setup();
+        }
     }
 }
