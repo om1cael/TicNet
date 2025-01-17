@@ -1,6 +1,7 @@
 package com.om1cael.ticnet.commands;
 
 import com.om1cael.ticnet.Main;
+import com.om1cael.ticnet.Responses;
 import com.om1cael.ticnet.network.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,18 +21,21 @@ public class JoinCommand {
         String[] splitCommand = this.clientCommand.split(" ");
         if(splitCommand.length <= 1) {
             log.info("Could not join room, because host ID was not specified {}", this.guest.getSocket().getInetAddress());
+            this.guest.writeClient(Responses.ROOM_ID_NOT_SPECIFIED);
             return;
         }
 
         int hostID = Integer.parseInt(splitCommand[1]);
         if(hostID == this.guest.getId()) {
             log.info("Could not join room, because host ID was the same as the guest ID {}", this.guest.getSocket().getInetAddress());
+            this.guest.writeClient(Responses.ROOM_ID_HOST_EQUALS_GUEST);
             return;
         }
 
         Player host = Main.getPlayersManager().readPlayer(hostID);
         if(host == null) {
             log.info("Could not join room, because host was not found.");
+            this.guest.writeClient(Responses.ROOM_HOST_NOT_FOUND);
             return;
         }
 
