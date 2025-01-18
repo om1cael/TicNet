@@ -65,9 +65,8 @@ public class Game implements Runnable {
                 return;
             }
 
-            if (board[row][column] == ' ') {
-                board[row][column] = player.getGameSymbol();
-                System.out.print(player.getGameSymbol());
+            if (this.board[row][column] == ' ') {
+                this.board[row][column] = player.getGameSymbol();
 
                 this.sendMessageToGameMembers(BoardResponses.boardMove(player.getGameSymbol(), row, column));
                 this.validateGameState();
