@@ -3,7 +3,7 @@ package com.om1cael.ticnet.response;
 import com.google.gson.Gson;
 import com.om1cael.ticnet.response.model.Response;
 
-public class Responses {
+public class RoomResponses {
     private static final Gson gson = new Gson();
 
     public static final String ROOM_ID_NOT_SPECIFIED = gson.toJson(new Response("R_100", "ROOM ID NOT SPECIFIED"));
