@@ -170,6 +170,8 @@ public class Game implements Runnable {
             this.xPlayer = this.guest.get();
             this.oPlayer = this.host;
         }
+
+        this.oPlayer.writeClient(GameResponses.YOUR_TURN);
     }
 
     public void setHost(Player host) {
