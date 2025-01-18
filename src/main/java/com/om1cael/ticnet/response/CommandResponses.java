@@ -1,10 +1,11 @@
 package com.om1cael.ticnet.response;
 
 import com.google.gson.Gson;
+import com.om1cael.ticnet.Main;
 import com.om1cael.ticnet.response.model.Response;
 
 public class CommandResponses {
-    private static Gson gson = new Gson();
+    private static Gson gson = Main.getGson();
 
     public static final String MAKE_MOVE_INSUFFICIENT_ARGS =
             gson.toJson(new Response("CR_800", "MAKE MOVE INSUFFICIENT ARGS"));

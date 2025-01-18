@@ -1,5 +1,6 @@
 package com.om1cael.ticnet;
 
+import com.google.gson.Gson;
 import com.om1cael.ticnet.network.Player;
 import com.om1cael.ticnet.network.PlayersManager;
 import com.om1cael.ticnet.session.RoomManager;
@@ -17,6 +18,7 @@ public class Main {
     private int idCounter;
 
     private final Logger log = LogManager.getLogger(Main.class);
+    private static final Gson gson = new Gson();
 
     private static final PlayersManager playersManager = new PlayersManager();
     private static final RoomManager roomManager = new RoomManager();
@@ -54,5 +56,9 @@ public class Main {
 
     public static RoomManager getRoomManager() {
         return roomManager;
+    }
+
+    public static Gson getGson() {
+        return gson;
     }
 }
