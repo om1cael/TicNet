@@ -115,10 +115,10 @@ public class Game implements Runnable {
 
         if(randomIndex == 0) {
             this.host.setGameSymbol('x');
-            this.host.writeClient(GameResponses.GAME_SYMBOL_ASSIGNED("host"));
+            this.host.writeClient(GameResponses.GAME_SYMBOL_ASSIGNED);
         } else {
             this.guest.get().setGameSymbol('x');
-            this.guest.get().writeClient(GameResponses.GAME_SYMBOL_ASSIGNED("guest"));
+            this.guest.get().writeClient(GameResponses.GAME_SYMBOL_ASSIGNED);
         }
     }
 
