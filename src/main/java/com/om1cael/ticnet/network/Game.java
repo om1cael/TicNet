@@ -47,7 +47,7 @@ public class Game implements Runnable {
 
             this.isRunning.set(true);
 
-            this.sendMessageToGameMembers(GameResponses.NEW_GAME);
+            this.sendMessageToGameMembers(GameResponses.GAME_STARTED);
         } else {
             log.error("It was not possible to start a game!");
             this.sendMessageToGameMembers(GameResponses.FAILED_NEW_GAME);

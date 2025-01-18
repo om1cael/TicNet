@@ -9,7 +9,7 @@ public class GameResponses {
     public static final String FAILED_NEW_GAME = gson.toJson(new Response("GR_300", "FAILED NEW GAME"));
     public static final String INVALID_MOVE = gson.toJson(new Response("GR_301", "INVALID MOVE"));
 
-    public static final String NEW_GAME = gson.toJson(new Response("GR_400", "NEW GAME"));
+    public static final String GAME_STARTED = gson.toJson(new Response("GR_400", "GAME_STARTED"));
     public static final String GAME_SYMBOL_ASSIGNED = gson.toJson(new Response("GR_401", "X GAME SYMBOL ASSIGNED"));
     public static final String YOUR_TURN = gson.toJson(new Response("GR_402", "YOUR TURN"));
 
