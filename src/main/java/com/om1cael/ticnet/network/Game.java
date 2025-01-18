@@ -54,13 +54,16 @@ public class Game implements Runnable {
     }
 
     public void validateGameState() {
+        if(isBoardFull()) {
+            this.sendMessageToGameMembers(GameResponses.GAME_DRAW);
+            return;
+        }
+
         char winner = getWinner();
         if (winner != ' ') {
             // Send winner message
             // Send loser message
         }
-
-        // isBoardFull() ? "Draw" : "Ongoing";
     }
 
     private char getWinner() {
