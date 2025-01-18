@@ -1,6 +1,7 @@
 package com.om1cael.ticnet.network;
 
 import com.om1cael.ticnet.Main;
+import com.om1cael.ticnet.response.BoardResponses;
 import com.om1cael.ticnet.response.GameResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,8 @@ public class Game implements Runnable {
     private Player xPlayer;
     private Player oPlayer;
 
+    private AtomicBoolean isXTurn;
+
     public Game(Player host, Optional<Player> guest) {
         this.host = host;
         this.guest = guest;
@@ -28,6 +31,7 @@ public class Game implements Runnable {
         this.hostAddress = this.host.getSocket().getInetAddress();
         this.xPlayer = null;
         this.oPlayer = null;
+        this.isXTurn = new AtomicBoolean(false);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -42,7 +46,6 @@ public class Game implements Runnable {
             this.assignGameSymbol();
 
             this.isRunning.set(true);
-            Main.createGameThread(this::play);
 
             this.sendMessageToGameMembers(GameResponses.NEW_GAME);
         } else {
@@ -52,8 +55,30 @@ public class Game implements Runnable {
         }
     }
 
-    private void play() {
-        while (this.isRunning.get()) {
+    public synchronized void makeMove(Player player, int row, int column) {
+        if (!this.isRunning.get()) return;
+        if (player != this.xPlayer && player != this.oPlayer) return;
+
+        if ((player == this.xPlayer && this.isXTurn.get()) || (player == this.oPlayer && !this.isXTurn.get())) {
+            if (board[row][column] == ' ') {
+                board[row][column] = player.getGameSymbol();
+
+                this.validateGameState();
+                this.switchTurn();
+                this.sendMessageToGameMembers(BoardResponses.boardMove(player.getGameSymbol(), row, column));
+            } else {
+                player.writeClient(GameResponses.INVALID_MOVE);
+            }
+        }
+    }
+
+    private void switchTurn() {
+        this.isXTurn.set(!this.isXTurn.get());
+
+        if(this.isXTurn.get()) {
+            this.xPlayer.writeClient(GameResponses.YOUR_TURN);
+        } else {
+            this.oPlayer.writeClient(GameResponses.YOUR_TURN);
         }
     }
 
