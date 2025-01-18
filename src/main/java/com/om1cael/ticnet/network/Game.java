@@ -100,7 +100,7 @@ public class Game implements Runnable {
             this.xPlayer.writeClient(GameResponses.GAME_LOSE);
         }
 
-        this.stopGame(false);
+        if(winner != ' ') this.stopGame(false);
     }
 
     private char getWinner() {
