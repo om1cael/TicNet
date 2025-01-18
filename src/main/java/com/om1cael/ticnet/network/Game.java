@@ -60,6 +60,11 @@ public class Game implements Runnable {
         if (player != this.xPlayer && player != this.oPlayer) return;
 
         if ((player == this.xPlayer && this.isXTurn.get()) || (player == this.oPlayer && !this.isXTurn.get())) {
+            if((row > 2 || column > 2) || (row < 0 || column < 0)) {
+                player.writeClient(GameResponses.INVALID_MOVE);
+                return;
+            }
+
             if (board[row][column] == ' ') {
                 board[row][column] = player.getGameSymbol();
                 System.out.print(player.getGameSymbol());
