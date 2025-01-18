@@ -62,6 +62,7 @@ public class Game implements Runnable {
         if ((player == this.xPlayer && this.isXTurn.get()) || (player == this.oPlayer && !this.isXTurn.get())) {
             if (board[row][column] == ' ') {
                 board[row][column] = player.getGameSymbol();
+                System.out.print(player.getGameSymbol());
 
                 this.validateGameState();
                 this.switchTurn();
@@ -95,7 +96,7 @@ public class Game implements Runnable {
         if (winner == 'x') {
             this.xPlayer.writeClient(GameResponses.GAME_WIN);
             this.oPlayer.writeClient(GameResponses.GAME_LOSE);
-        } else {
+        } else if(winner == 'o') {
             this.oPlayer.writeClient(GameResponses.GAME_WIN);
             this.xPlayer.writeClient(GameResponses.GAME_LOSE);
         }
