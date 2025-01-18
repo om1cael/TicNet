@@ -18,12 +18,14 @@ public class Game implements Runnable {
     private final InetAddress hostAddress;
 
     private final Logger log = LogManager.getLogger(Game.class);
+    private Player xPlayer;
 
     public Game(Player host, Optional<Player> guest) {
         this.host = host;
         this.guest = guest;
         this.isRunning = new AtomicBoolean(false);
         this.hostAddress = this.host.getSocket().getInetAddress();
+        this.xPlayer = null;
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -119,9 +121,11 @@ public class Game implements Runnable {
         if(randomIndex == 0) {
             this.host.setGameSymbol('x');
             this.host.writeClient(GameResponses.GAME_SYMBOL_ASSIGNED);
+            this.xPlayer = this.host;
         } else {
             this.guest.get().setGameSymbol('x');
             this.guest.get().writeClient(GameResponses.GAME_SYMBOL_ASSIGNED);
+            this.xPlayer = this.guest.get();
         }
     }
 
