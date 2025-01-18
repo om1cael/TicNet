@@ -15,6 +15,7 @@ public class Player implements Runnable {
     private volatile boolean isRunning;
 
     private Game currentGame = null;
+    private char gameSymbol = 'o';
 
     private final Logger log = LogManager.getLogger(Player.class);
     private PrintWriter printWriter;
@@ -103,6 +104,14 @@ public class Player implements Runnable {
 
     public Game getCurrentGame() {
         return this.currentGame;
+    }
+
+    public void setGameSymbol(char gameSymbol) {
+        this.gameSymbol = gameSymbol;
+    }
+
+    public char getGameSymbol() {
+        return this.gameSymbol;
     }
 
     public Socket getSocket() {
