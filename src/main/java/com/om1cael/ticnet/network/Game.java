@@ -35,6 +35,8 @@ public class Game implements Runnable {
     private void setup() {
         if (host != null && guest.isPresent()) {
             log.info("A new game with the host {} was started!", this.host.getSocket().getInetAddress());
+            this.assignGameSymbol();
+
             this.isRunning.set(true);
             Main.createGameThread(this::play);
 
@@ -102,6 +104,17 @@ public class Game implements Runnable {
         }
 
         this.isRunning.set(false);
+    }
+
+    private void assignGameSymbol() {
+        final int randomIndex = (int)((Math.random() * 2));
+        if(this.host == null || (this.guest == null || this.guest.isEmpty())) {
+            this.stopGame(false);
+            return;
+        }
+
+        if(randomIndex == 0) this.host.setGameSymbol('x');
+        else this.guest.get().setGameSymbol('x');
     }
 
     public void setHost(Player host) {
