@@ -49,7 +49,7 @@ public class Game implements Runnable {
 
             this.sendMessageToGameMembers(GameResponses.GAME_STARTED);
         } else {
-            log.error("It was not possible to start a game!");
+            log.error("It was not possible to start game from {}", this.hostAddress);
             this.sendMessageToGameMembers(GameResponses.FAILED_NEW_GAME);
             Main.getRoomManager().deleteRoom(this.host, false);
         }
@@ -155,6 +155,7 @@ public class Game implements Runnable {
     private void assignGameSymbol() {
         final int randomIndex = (int)((Math.random() * 2));
         if(this.host == null || (this.guest == null || this.guest.isEmpty())) {
+            log.error("Could not assign symbol at {} because host or guest is null. Ending the game", this.hostAddress);
             this.stopGame(false);
             return;
         }
@@ -187,12 +188,20 @@ public class Game implements Runnable {
     }
 
     private void sendMessageToGameMembers(String message) {
+        boolean couldSendMessage = false;
+
         if(this.host != null) {
             this.host.writeClient(message);
+            couldSendMessage = true;
         }
 
         if(this.guest != null && this.guest.isPresent()) {
             this.guest.get().writeClient(message);
+            couldSendMessage = true;
+        }
+
+        if(!couldSendMessage) {
+            log.error("Could not send message to game members at {}", this.hostAddress);
         }
     }
 
