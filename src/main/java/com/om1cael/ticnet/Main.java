@@ -21,8 +21,6 @@ public class Main {
     private static final PlayersManager playersManager = new PlayersManager();
     private static final RoomManager roomManager = new RoomManager();
 
-    private static final ExecutorService gamePool = Executors.newFixedThreadPool(4);
-
     public static void main(String[] args) {
         new Main().start();
     }
@@ -48,10 +46,6 @@ public class Main {
         } catch (IOException e) {
             log.fatal("Server could not be started!", e);
         }
-    }
-
-    public static void createGameThread(Runnable runnable) {
-        gamePool.execute(runnable);
     }
 
     public static PlayersManager getPlayersManager() {
