@@ -97,9 +97,9 @@ public class Game implements Runnable {
             );
 
             if(this.host == null) {
-                log.info("Disconnection origin is host");
+                this.guest.get().writeClient(GameResponses.DISCONNECTION_WIN);
             } else if(this.guest.isEmpty()) {
-                log.info("Disconnection origin is guest");
+                this.host.writeClient(GameResponses.DISCONNECTION_WIN);
             }
         }
 
