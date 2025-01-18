@@ -25,7 +25,7 @@ public class MakeMoveCommand {
         }
 
         String[] splitClientData = this.clientData.split(" ");
-        if(splitClientData.length <= 3) {
+        if(splitClientData.length < 3) {
             this.player.writeClient(CommandResponses.MAKE_MOVE_INSUFFICIENT_ARGS);
             return;
         }
