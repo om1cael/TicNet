@@ -64,9 +64,12 @@ public class Game implements Runnable {
         }
 
         char winner = getWinner();
-        if (winner != ' ') {
-            // Send winner message
-            // Send loser message
+        if (winner == 'x') {
+            this.xPlayer.writeClient(GameResponses.GAME_WIN);
+            this.oPlayer.writeClient(GameResponses.GAME_LOSE);
+        } else {
+            this.oPlayer.writeClient(GameResponses.GAME_WIN);
+            this.xPlayer.writeClient(GameResponses.GAME_LOSE);
         }
     }
 

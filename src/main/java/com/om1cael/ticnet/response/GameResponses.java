@@ -15,4 +15,5 @@ public class GameResponses {
     public static final String GAME_WIN = gson.toJson(new Response("GR_500", "WIN"));
     public static final String GAME_DRAW = gson.toJson(new Response("GR_501", "GAME DRAW"));
     public static final String DISCONNECTION_WIN = gson.toJson(new Response("GR_502", "DISCONNECTION WIN"));
+    public static final String GAME_LOSE = gson.toJson(new Response("GR_503", "LOSE"));
 }
