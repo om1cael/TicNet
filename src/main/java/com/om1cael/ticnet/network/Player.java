@@ -4,6 +4,7 @@ import com.om1cael.ticnet.Main;
 import com.om1cael.ticnet.commands.CreateCommand;
 import com.om1cael.ticnet.commands.JoinCommand;
 import com.om1cael.ticnet.commands.MakeMoveCommand;
+import com.om1cael.ticnet.response.model.PlayerJoinResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,6 +37,7 @@ public class Player implements Runnable {
     @Override
     public void run() {
         log.info("New connection from {}", this.socket.getInetAddress());
+        this.writeClient(Main.getGson().toJson(new PlayerJoinResponse("PR_0", this.id)));
 
         try(BufferedReader clientData = new BufferedReader(new InputStreamReader(this.socket.getInputStream()))) {
             while(this.isRunning) {
