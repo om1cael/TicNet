@@ -69,9 +69,9 @@ public class Game implements Runnable {
                 board[row][column] = player.getGameSymbol();
                 System.out.print(player.getGameSymbol());
 
+                this.sendMessageToGameMembers(BoardResponses.boardMove(player.getGameSymbol(), row, column));
                 this.validateGameState();
                 this.switchTurn();
-                this.sendMessageToGameMembers(BoardResponses.boardMove(player.getGameSymbol(), row, column));
             } else {
                 player.writeClient(GameResponses.INVALID_MOVE);
             }
@@ -150,6 +150,7 @@ public class Game implements Runnable {
         }
 
         this.isRunning.set(false);
+        Main.getRoomManager().deleteRoom(this.host, abruptStop);
     }
 
     private void assignGameSymbol() {
