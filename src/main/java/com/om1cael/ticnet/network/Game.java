@@ -85,6 +85,7 @@ public class Game implements Runnable {
     public void validateGameState() {
         if(isBoardFull()) {
             this.sendMessageToGameMembers(GameResponses.GAME_DRAW);
+            this.stopGame(false);
             return;
         }
 
@@ -96,6 +97,8 @@ public class Game implements Runnable {
             this.oPlayer.writeClient(GameResponses.GAME_WIN);
             this.xPlayer.writeClient(GameResponses.GAME_LOSE);
         }
+
+        this.stopGame(false);
     }
 
     private char getWinner() {
