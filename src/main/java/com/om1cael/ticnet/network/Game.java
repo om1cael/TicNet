@@ -73,6 +73,8 @@ public class Game implements Runnable {
     }
 
     private void switchTurn() {
+        if(!this.isRunning.get()) return;
+
         this.isXTurn.set(!this.isXTurn.get());
 
         if(this.isXTurn.get()) {
