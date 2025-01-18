@@ -1,6 +1,7 @@
 package com.om1cael.ticnet.network;
 
 import com.om1cael.ticnet.Main;
+import com.om1cael.ticnet.response.GameResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,8 +37,11 @@ public class Game implements Runnable {
             log.info("A new game with the host {} was started!", this.host.getSocket().getInetAddress());
             this.isRunning.set(true);
             Main.createGameThread(this::play);
+
+            this.sendMessageToGameMembers(GameResponses.NEW_GAME);
         } else {
             log.error("It was not possible to start a game!");
+            this.sendMessageToGameMembers(GameResponses.FAILED_NEW_GAME);
             Main.getRoomManager().deleteRoom(this.host, false);
         }
     }
@@ -47,13 +51,14 @@ public class Game implements Runnable {
         }
     }
 
-    public String checkGameState() {
+    public void validateGameState() {
         char winner = getWinner();
         if (winner != ' ') {
-            return winner + " wins";
+            // Send winner message
+            // Send loser message
         }
 
-        return isBoardFull() ? "Draw" : "Ongoing";
+        // isBoardFull() ? "Draw" : "Ongoing";
     }
 
     private char getWinner() {
@@ -108,6 +113,16 @@ public class Game implements Runnable {
 
         if(guest.isPresent()) {
             this.setup();
+        }
+    }
+
+    private void sendMessageToGameMembers(String message) {
+        if(this.host != null) {
+            this.host.writeClient(message);
+        }
+
+        if(this.guest != null && this.guest.isPresent()) {
+            this.guest.get().writeClient(message);
         }
     }
 
