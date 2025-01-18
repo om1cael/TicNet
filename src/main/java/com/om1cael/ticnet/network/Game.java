@@ -22,7 +22,7 @@ public class Game implements Runnable {
     private Player xPlayer;
     private Player oPlayer;
 
-    private AtomicBoolean isXTurn;
+    private final AtomicBoolean isXTurn;
 
     public Game(Player host, Optional<Player> guest) {
         this.host = host;
