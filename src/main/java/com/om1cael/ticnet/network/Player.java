@@ -3,6 +3,7 @@ package com.om1cael.ticnet.network;
 import com.om1cael.ticnet.Main;
 import com.om1cael.ticnet.commands.CreateCommand;
 import com.om1cael.ticnet.commands.JoinCommand;
+import com.om1cael.ticnet.commands.MakeMoveCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,6 +79,8 @@ public class Player implements Runnable {
             new CreateCommand(Main.getPlayersManager().readPlayer(this.id)).run();
         else if(clientData.contains("join-room"))
             new JoinCommand(Main.getPlayersManager().readPlayer(this.id), clientData).run();
+        else if(clientData.contains("make-move"))
+            new MakeMoveCommand(Main.getPlayersManager().readPlayer(this.id), this.currentGame, clientData).run();
         else if(clientData.contains("exit")) {
             this.disconnect();
         }
