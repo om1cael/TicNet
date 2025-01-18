@@ -9,4 +9,12 @@ public class GameResponses {
     public static final String FAILED_NEW_GAME = gson.toJson(new GameResponse("GR_300", "FAILED NEW GAME", "BOTH"));
 
     public static final String NEW_GAME = gson.toJson(new GameResponse("GR_400", "NEW GAME", "BOTH"));
+    public static final String GAME_SYMBOL_ASSIGNED(String player) {
+        return gson.toJson(new GameResponse(
+                "GR_401",
+                "X GAME SYMBOL ASSIGNED",
+                player
+            )
+        );
+    }
 }

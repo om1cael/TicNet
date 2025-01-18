@@ -113,8 +113,13 @@ public class Game implements Runnable {
             return;
         }
 
-        if(randomIndex == 0) this.host.setGameSymbol('x');
-        else this.guest.get().setGameSymbol('x');
+        if(randomIndex == 0) {
+            this.host.setGameSymbol('x');
+            this.host.writeClient(GameResponses.GAME_SYMBOL_ASSIGNED("host"));
+        } else {
+            this.guest.get().setGameSymbol('x');
+            this.guest.get().writeClient(GameResponses.GAME_SYMBOL_ASSIGNED("guest"));
+        }
     }
 
     public void setHost(Player host) {
